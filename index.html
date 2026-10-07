@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Las noches de El Sarnoso, a short story by César Cantú.">
+
+  <title>Las noches de El Sarnoso — César Cantú</title>
+
+  <style>
+    /* =========================================================
+       LAS NOCHES DE EL SARNOSO
+       Literary magazine / pulp horror edition
+       ========================================================= */
+
+    :root {
+      --paper: #eee8d8;
+      --paper-deep: #e4dcc8;
+      --ink: #211d19;
+      --muted: #766b5e;
+      --red: #8e171d;
+      --red-dark: #681217;
+      --rule: #b9ad98;
+
+      --font-body:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      --font-ui:
+        "Arial Narrow",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+      --font-display:
+        Impact,
+        Haettenschweiler,
+        "Arial Narrow Bold",
+        "Arial Narrow",
+        sans-serif;
+
+      --reading-width: 720px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(90,65,30,.035), transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(90,65,30,.025), transparent 30%),
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 19px;
+      line-height: 1.78;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .16;
+      z-index: 999;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(50,35,20,.025) 0,
+          rgba(50,35,20,.025) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+      mix-blend-mode: multiply;
+    }
+
+    img { max-width: 100%; height: auto; }
+
+    a { color: var(--red); }
+
+    ::selection {
+      background: var(--red);
+      color: var(--paper);
+    }
+
+    /* =========================================================
+       READING PROGRESS
+       ========================================================= */
+
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: var(--red);
+      z-index: 1000;
+    }
+
+    /* =========================================================
+       STORY HEADER
+       ========================================================= */
+
+    .story-header {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 70px 25px 62px;
+      text-align: center;
+    }
+
+    .story-header::before {
+      content: "";
+      display: block;
+      margin-bottom: 22px;
+      color: var(--red);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .34em;
+    }
+
+    .story-header::after {
+      content: "✦";
+      display: block;
+      margin-top: 38px;
+      color: var(--red);
+      font-size: 18px;
+    }
+
+    .story-title {
+      max-width: 850px;
+      margin: 0 auto;
+      color: var(--red);
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 11vw, 7.5rem);
+      font-weight: 900;
+      line-height: .82;
+      letter-spacing: -.025em;
+      text-transform: uppercase;
+      transform: scaleX(.9);
+      transform-origin: center;
+    }
+
+    .story-author {
+      margin-top: 30px;
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .19em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       STORY BODY
+       ========================================================= */
+
+    .story {
+      position: relative;
+      max-width: var(--reading-width);
+      margin: 0 auto;
+      padding: 0 25px 60px;
+    }
+
+    .story::before,
+    .story::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--rule);
+      opacity: .45;
+    }
+
+    .story::before { left: 0; }
+    .story::after { right: 0; }
+
+    .story p {
+      margin: 0 0 1.35em;
+    }
+
+    .story > p + p {
+      text-indent: 1.5em;
+      margin-top: -1.35em;
+    }
+
+    .story .no-indent,
+    .story .scene-break + p {
+      text-indent: 0;
+    }
+
+    .story > p:first-child::first-letter {
+      float: left;
+      margin: .06em .10em 0 0;
+      color: var(--red);
+      font-family: var(--font-display);
+      font-size: 4.7em;
+      font-weight: 900;
+      line-height: .72;
+    }
+
+    /* =========================================================
+       SCENE BREAKS
+       ========================================================= */
+
+    .scene-break {
+      margin: 3.2em 0;
+      color: var(--red);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .45em;
+      line-height: 1;
+      text-align: center;
+    }
+
+    /* =========================================================
+       SOCIAL SHARE SECTION
+       ========================================================= */
+
+    .social-share {
+      max-width: var(--reading-width);
+      margin: 40px auto 60px;
+      padding: 30px 25px 0;
+      border-top: 1px solid var(--rule);
+      text-align: center;
+    }
+
+    .share-title {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .share-btn:hover {
+      background: var(--red);
+      color: var(--paper);
+      border-color: var(--red);
+    }
+
+    .share-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .story-footer {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 42px 25px 70px;
+      border-top: 4px solid var(--red);
+      color: var(--muted);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      line-height: 1.7;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .story-footer p {
+      margin: 8px 0;
+    }
+
+    .story-footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .story-footer a:hover {
+      color: var(--red);
+    }
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 600px) {
+      body {
+        font-size: 18px;
+        line-height: 1.72;
+      }
+
+      .story-header {
+        padding: 50px 21px 40px;
+      }
+
+      .story-title {
+        font-size: clamp(3rem, 18vw, 5rem);
+        transform: scaleX(.88);
+      }
+
+      .story-author {
+        margin-top: 24px;
+        font-size: 11px;
+      }
+
+      .story {
+        padding-left: 21px;
+        padding-right: 21px;
+      }
+
+      .story::before { left: 4px; }
+      .story::after { right: 4px; }
+
+      .story > p:first-child::first-letter {
+        font-size: 4.1em;
+      }
+
+      .share-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .share-btn {
+        justify-content: center;
+      }
+
+      .story-footer {
+        padding-left: 21px;
+        padding-right: 21px;
+      }
+    }
+
+    /* =========================================================
+       PRINT
+       ========================================================= */
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 2.2cm;
+      }
+
+      body {
+        background: white;
+        color: black;
+        font-size: 12pt;
+        line-height: 1.55;
+      }
+
+      body::before,
+      .reading-progress,
+      .social-share {
+        display: none;
+      }
+
+      .story-header {
+        padding-top: 30px;
+        padding-bottom: 50px;
+      }
+
+      .story-header::before,
+      .story-header::after {
+        color: black;
+      }
+
+      .story-title {
+        color: black;
+        font-size: 30pt;
+        transform: none;
+      }
+
+      .story {
+        max-width: none;
+        padding: 0;
+      }
+
+      .story::before,
+      .story::after {
+        display: none;
+      }
+
+      .story p {
+        orphans: 3;
+        widows: 3;
+      }
+
+      .scene-break {
+        color: black;
+        page-break-inside: avoid;
+      }
+
+      .story-footer {
+        display: none;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <!-- Reading progress indicator -->
+  <div class="reading-progress" id="readingProgress"></div>
+
+
+  <!-- =======================================================
+       STORY TITLE
+       ======================================================== -->
+
+  <header class="story-header">
+
+    <h1 class="story-title">
+      Las noches de El Sarnoso
+    </h1>
+
+    <div class="story-author">
+      César Cantú
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       STORY
+       ======================================================== -->
+
+  <main class="story">
+
+    <p>
+      Aquella mañana sonó como una selva de gargantas y dientes.
+    </p>
+
+    <p>
+      Un escándalo despertó a los vecinos de la colonia Doctores, quienes intuyeron lo que horas antes había sucedido. Todos salieron de sus casas rumbo al ministerio público; en compañía de sus perros, si los tenían.
+    </p>
+
+    <p>
+      Cada uno de los perros callejeros de la colonia se congregó a las afueras del ministerio desde muy temprano. Ladraban con una rabia ancestral que hizo eco por complejos departamentales, vecindades derruidas y el cristal de los juzgados, derramándose hasta las terrazas más distinguidas de la Roma y la Condesa. Los vecinos se sumaron en grupos de tres y de cuatro a la jauría.
+    </p>
+
+    <p>
+      —¡Ya suéltenlo!
+    </p>
+
+    <p>
+      —¡No hizo nada!
+    </p>
+
+    <p>
+      —¡Mata puro gringo!
+    </p>
+
+    <p>
+      Al fondo del ministerio, cinco oficiales resguardaban una celda que apenas si alcanzaba a contener el cuerpo de El Sarnoso. Largo como colmillo, yacía en el suelo, sin ropa. Su barba esponjada ostentaba los rastros rojos de un festín.
+    </p>
+
+    <p>
+      El Sarnoso dormía. Los gritos y ladridos le llegaban hasta sus sueños como filtrados por una neblina. Su corazón latía lento –muy lento– a la espera de otra noche vaciada de luna y de estrellas.
+    </p>
+
+
+    <!-- Scene break -->
+
+    <div class="scene-break" aria-hidden="true">
+      • • •
+    </div>
+
+
+    <p class="no-indent">
+      El primero que encontraron fue un güero de Kansas, se me hace. Apareció de madrugada, tumbado frente a las escaleras que bajan a Centro Médico. Le faltaban una mano y cachos de pantorrilla; y quedó con la cara toda mordisqueada. Nada más lo vi en los periódicos, como la mayoría. Unas fotos todas mal tomadas, que apenas si se distinguían, pero era claro que el pobre quedó bien mal, y también que no era de aquí. Se le veían los brazos largos, largos; las piernas como de rama quebrada. Y rubio hasta los bigotes. Muy joven, también. Ya me imagino la lloradera de su madre cuando vea cómo le devuelven a su hijo. Primero pensamos que lo había agarrado una jauría de perros hambreados, de esos que a veces bajan del monte y se pierden en la ciudad. Nada más cazan porque andan todos asustados y no saben pedir. Ya imaginará la histeria de la gente. Nadie quería sacar ni a sus niños ni a sus mascotas a pasear de noche. ¡Y luego los cabrones! A más de uno agarré a punto de tirarle una patada a un pobre animal de la calle. La cosa empeoró cuando salió el segundo cadáver. Una gringuita, de hecho. Chiquitita y caderona; de pelo negro y piel naranja. A esa la encontraron allá por donde comen los colombianos y gente así. Le faltaba un brazo entero a la pobre, que de seguro murió del puro terror. A la semana salió el tercero allá por los antros de Álvaro Obregón. Y el cuarto apareció unos días después todo doblado bajo un resbaladero. Para entonces ya nadie creía que fueran perros. Un asesino serial a lo mejor. Hasta de osos se habló.
+    </p>
+
+    <p>
+      ¿Entonces qué fue?
+    </p>
+
+    <p>
+      Ay mija. Pues nada que yo te pueda explicar. Nada más vendo estropajo.
+    </p>
+
+
+    <!-- Scene break -->
+
+    <div class="scene-break" aria-hidden="true">
+      • • •
+    </div>
+
+
+    <p class="no-indent">
+      Los perros seguían a El Sarnoso a todas partes. Pequeñas jaurías de cinco o seis se formaban tras sus pasos a lo largo del día, atraídos por la hermandad de las criaturas de la calle. Nunca eran los mismos. Uno a uno se iban separando del grupo, guiados por aromas a carne engrasada o la posibilidad de un sueño cálido bajo techo. Pero siempre llegaban más.
+    </p>
+
+    <p>
+      De día y de noche, El Sarnoso habitaba las calles acompañado. Comía con los perros. Dormía con los perros. Mendigaba con los perros. Se tiraba panza arriba en los callejones con ellos, viendo a la gente pasar, y también a otros perros. En días de calor, los salpicaba con agua verdosa de las fuentes mientras enjuagaba sus barbas y coco pelado. Y en días de frío, cuando tenía su ropa secando en alguna banca, los perros le cobijaban las llagas ensangrentadas con su pelo.
+    </p>
+
+    <p>
+      Apenas se dio cuenta cuando lo dejaron solo en su primera noche. Los perros comenzaron a dispersarse, uno tras otro, advertidos por el fresco en los minutos finales del sol. El último en irse le lamió la punta de las uñas –planas y mugrosas– antes de dar media vuelta y perderse en los primeros brotes nocturnos de sombra.
+    </p>
+
+    <p>
+      La primera noche de El Sarnoso fue fría, pero él no la sintió así. Un calor le atacó las plantas de los pies, trepó por sus pantorrillas y se le hizo remolino en el estómago. Deambuló por las calles cargando un tufo de animal en las entrañas.
+    </p>
+
+    <p>
+      Conocía muy bien las banquetas y los muros; tenía una familiaridad única con los postes de luz, las alcantarillas y hasta con los rincones donde la basura se acumula y expande como hongo. Pero la calle era otra esa noche. Los edificios ganaron altura y filo. Las avenidas se doblaron y desdoblaron sin dirección aparente. Las sombras se alargaron para beber de los charcos de luz mercurial. Por primera vez en muchos años, El Sarnoso se sintió extraviado en el fragmento de un laberinto.
+    </p>
+
+    <p>
+      Caminó horas, desorientado por barridos de luz, hasta que la calle lo llevó a un parche de pasto seco bajo un árbol. Se dejó caer de espaldas contra el tronco. El pecho le daba vueltas atrapado en un torbellino de vientos volcánicos. Alzó la mirada. Las ramas del árbol, deshojadas, fracturaban la noche en mosaicos sin luna, sin estrellas.
+    </p>
+
+    <p>
+      —Hey man, you okay?
+    </p>
+
+    <p>
+      Las palabras cayeron en oídos de El Sarnoso como trozos de chatarra enrojecida. Percibió de reojo un par de rodillas pálidas y unas piernas entubadas en calcetas de lana blanca. El calor, insufrible ya, se abrió paso por su garganta, se posó en su boca y comenzó a empujar quijada y dientes hacia la noche. Fue imposible para El Sarnoso no alzar la cara al cielo. El aullido emergió tembloroso, despavorido.
+    </p>
+
+
+    <!-- Scene break -->
+
+    <div class="scene-break" aria-hidden="true">
+      • • •
+    </div>
+
+
+    <p class="no-indent">
+      No, nadie lo conocía, pero todos en la colonia lo ubicábamos, ¿sabe? Pregunte y no habrá quien le diga que nunca lo vio pasar con sus perros. Todos le dábamos de comer un taco o un Gansito. Yo le daba su tamal todos los domingos que pasaba frente al templo. Y nunca daba problemas. Ni él ni sus perros.
+    </p>
+
+    <p>
+      Exacto. Bien mansito. De muy mal ver el desgraciado. Y muy mal oler…
+    </p>
+
+    <p>
+      ¡Uff sí! Pero nunca le había hecho daño a nadie. Nobilísimo que era. Yo no hubiera creído que mató a todos esos gringos si no me toca verlo. Pasaban de las doce e iba de regreso para mi casa cargando el cazuelón de tamales. No me fue tan bien en el día, así que ligero no iba. El caso es que estaba como a dos minutos de la casa, y que escucho un grito pero grito, como de alguien al que le están sacando las tripas por el ombligo. Me eché a correr de inmediato y como pude, porque ya se imaginará lo fea que se pone la cosa acá de noche. Doblé esa esquina que ve allá, que queda a unos pasos de mi puerta, y en eso que lo veo. Estaba en plena calle, como en cuclillas, con el hocico bien enterrado en la panza de un güero. Nada más se le veían las patitas al pobre brincando cada vez que le daban un tirón en el intestino. Le juro que ni respiré. Me quedé ahí parado, viéndole la espalda pelona bajo la luz del poste. No sé si me olió o escuchó mi corazón o qué, pero se percató de que yo estaba ahí. Y que se deja de comer al gringo. Y que se para. Y se voltea. Cosa más horrible no he visto. Haga de cuenta un mandril mal pelado. Se le notaba vagamente que era hombre, o que había sido hombre. Tenía el hocico largo con unos colmillos que se le salían todos chuecos y con la punta torcida. Las orejas de perro caídas y mordisqueadas. Y los ojos. No eran rojos, tal cual. El color era como de carne mal cocida.
+    </p>
+
+    <p>
+      Y la barba. No olvides la barba.
+    </p>
+
+    <p>
+      ¡Ah sí! Debajo del hocico, en la punta, le crecía una maraña de pelo larguillo, gris. Una barba, pues. Igual de mugrosa y revelta que la de El Sarnoso. Y luego la piel llena de llagas sangradas. ¿Quién más iba ser? Bueno, el animal este se me quedó viendo unos segundos y empezó a acercarse, lento. Venía oliendo el aire. Yo quería salir corriendo, pero véame usted nada más. ¿Qué iba a lograr? Quién sabe qué pasó. Sólo me olisqueó tantito, luego a la cazuela. En eso se oyó una moto arrancando. El animal paró oreja, vio para todas partes y corrió en chinga. Ni acabó de comerse al gringuillo, que se murió ahí tirado en la calle de todos modos.
+    </p>
+
+    <p>
+      ¿Lo volvió a ver?
+    </p>
+
+    <p>
+      Yo no. Pero mi compa aquí sí.
+    </p>
+
+    <p>
+      Sí. Yo lo vi un jueves, ya de madrugada. Iba saliendo de La Cucufata.
+    </p>
+
+    <p>
+      ¿La Cucufata?
+    </p>
+
+    <p>
+      Es un baresillo. Pero no iba tan mal, ¿eh? Podía caminar. Me acababa de pegar el aire de fuera y que veo de reojo una cosona corriendo por la banqueta de enfrente. Primero pensé que era un vato enorme en cueros. Luego noté que tenía cabeza de animal. De coyote, creí. No lo vi a detalle como mi compa aquí. Lo que sí noté clarito fue que llevaba un cacho de pierna entre el hocico. Del pie a la pantorrilla.
+    </p>
+
+    <p>
+      ¿No sería una cabeza? Ya ves que encontraron a un negro descabezado por esas fechas.
+    </p>
+
+    <p>
+      No. A ese lo hallaron tres días antes… Dirá usted, señorita, que si lo que vi no habrá sido la borrachera. Lo pensé, pero luego le conté a Flavio, y él me dijo lo que usted ya escuchó.
+    </p>
+
+    <p>
+      De puritita suerte seguimos vivos.
+    </p>
+
+    <p>
+      Pero sólo mata extranjeros, ¿no?
+    </p>
+
+    <p>
+      Gringos. Europeos. Chinos.
+    </p>
+
+    <p>
+      Chinos no. Esos no andan tanto por acá. Lo que sí se me hace que se chingó fue a un coreano.
+    </p>
+
+    <p>
+      ¿Y por qué creen que puro extranjero?
+    </p>
+
+    <p>
+      Sepa. Casi no los topaba, hasta donde sé. Sólo una vez lo vi interactuar con unos gringuillos. Le dieron una charolita de tacos. Más para sus perros que para él, sospecho.
+    </p>
+
+    <p>
+      Tal vez le caen mal. ¿A usted no la desesperan? Aquí los toleramos, pero hay días…
+    </p>
+
+
+    <!-- Scene break -->
+
+    <div class="scene-break" aria-hidden="true">
+      • • •
+    </div>
+
+
+    <p class="no-indent">
+      El Sarnoso sintió un lengüetazo en la punta de los dedos. El cielo progresaba del rojo al púrpura, recortado por la figura y el casco de Mercurio. Pronto llegarían el frío y la congoja. El velo que cubre la ciudad se desintegraría, dejando sólo las formas brutas del hormigón y el cristal.
+    </p>
+
+    <p>
+      El Sarnoso echó a andar en línea recta, sin rumbo. Las primeras punzadas de calor en las puntas de los pies lo hicieron pensar –con instinto, más que con razón– que, aún de noche, el sol ardía bajo la calle, exhalando su vaho moribundo hacia las criaturas desdichadas de la superficie.
+    </p>
+
+    <p>
+      Una corriente de lámparas y siluetas se precipitaba hacia sus ojos. El cielo estaba vacío, y los astros vagaban sobre banquetas y avenidas, tan desorientados como cualquier ser terrenal. El Sarnoso creyó escuchar voces amigables, percibir aromas apetitosos. En cualquier otra noche habría aceptado sus platos de carne tiesa y tortillas centelleantes de aceite, pero el calor ya le había calcinado las entrañas y ahora soplaba espirales en su pecho. Su cuerpo no podía hacer otra cosa más que caminar.
+    </p>
+
+    <p>
+      El torrente de destellos se secó poco a poco. La noche quedó alumbrada sólo por globos que colgaban del aire en pares, emitiendo halos de fina luz. Surgieron torres y obeliscos; flores de elegancia espectral. Las paredes, cada vez más estrechas en torno a la avenida, retoñaron rostros de querubines, alas de pájaro, remolinos de ramas, hojas y espinas. El Sarnoso vagó entre colmenas de concreto; hermosas, vacías.
+    </p>
+
+    <p>
+      Otras voces le llegaron claras, aunque de muy lejos. El calor ya estaba en su cuello, ahogándolo como un puño de aire denso. A la distancia, uno de los edificios ostentaba una corona de lucesillas anaranjadas. Cúmulos de sombras se mecían bajo su fulgor.
+    </p>
+
+    <p>
+      Caminó más rápido. La confusión de voces se volvió más nítida y bárbara. Al pie del edificio, El Sarnoso sintió la raspadura de sus ecos revolcándose en lo profundo de sus oídos. El calor, enfurecido, evaporó sus ojos y derritió sus dientes.
+    </p>
+
+    <p>
+      Tres pisos separaban la terraza de la calle. Incluso en el escándalo de conversaciones y música, todos escucharon el primer gruñido de agonía. Luego vino el aullido. Y, fatalmente, garras trepando la pared.
+    </p>
+
+
+    <!-- Scene break -->
+
+    <div class="scene-break" aria-hidden="true">
+      • • •
+    </div>
+
+
+    <p class="no-indent">
+      ¿Entonces cuántos?
+    </p>
+
+    <p>
+      De perdido unos treinta.
+    </p>
+
+    <p>
+      ¿Todos extranjeros?
+    </p>
+
+    <p>
+      Los muertos, sí. Había otra gente en la terraza, pero la gran mayoría eran de fuera. Gringos casi todos.
+    </p>
+
+    <p>
+      ¿Cómo pasó?
+    </p>
+
+    <p>
+      Unos comensales se estaban asomando por el barandal. Yo estaba ocupada atendiendo una mesa grande, pero escuché el aullido. Casi al instante, una sombra enorme brincó desde abajo, como si hubiera estado pegada a la pared, y se le echó encima a uno de los que estaban ahí asomados. Luego luego se soltó la gritadera. Yo me fui corriendo a la cocina. No vi más, pero oí clarito cómo tumbaban sillas y mesas; a la gente gritando, cada una en su idioma; y al animal ese tirando mordidas.
+    </p>
+
+    <p>
+      Yo sí alcancé a verlo. No tuve chance de correr, así que me tiré bajo una mesa en la esquina, hecha ovillo. Pasé casi todo ese rato con los ojos cerrados, pero no pude evitar abrirlos de a momentos. Vi montones de gente tirada en el piso; montañitas de cuerpos escurriendo sangre. Había hombres y mujeres; jóvenes y ancianos. Pechos abiertos como fruta partida; brazos arrancados; caras sin nariz, o a las que les faltaba un pedazo de cachete, o parte de la quijada. También había cabezas colgando de los cuerpos, agarradas apenas de un hilito carnoso. Nunca pensé ver tanto hueso y músculo expuesto. Toda la terraza apestaba a rastro.
+    </p>
+
+    <p>
+      ¿Cómo le hizo para salir viva?
+    </p>
+
+    <p>
+      Sólo me quedé ahí, quieta y mirando.
+    </p>
+
+    <p>
+      ¿Ni siquiera se le acercó?
+    </p>
+
+    <p>
+      No. Lo sentí alrededor mío. Escuché cómo destripaba a algunas de las personas en las otras mesas… Sospecho que sí me vio, pero no hizo nada. Ni un rasguño. El susto de mi vida, nada más.
+    </p>
+
+    <p>
+      ¿Alcanzó a verlo bien?
+    </p>
+
+    <p>
+      Bien bien, no.
+    </p>
+
+    <p>
+      ¿Cómo lo describiría?
+    </p>
+
+    <p>
+      Un hombre lobo, pero sin pelo. Muy patético. Era grande, pero bien tilico el pobre. Y la cabeza larga, medio aplanada.
+    </p>
+
+    <p>
+      ¿Cuál hombre lobo? ¿No dijiste que tenía cara como de viejo?
+    </p>
+
+    <p>
+      Sí, más o menos. O sea, no digo que haya sido un hombre lobo. Es lo único que se me ocurre para describirlo.
+    </p>
+
+    <p>
+      Para mí que era un nahual.
+    </p>
+
+    <p>
+      Pero esas cosas son del monte, ¿no?
+    </p>
+
+    <p>
+      ¿Y luego?
+    </p>
+
+    <p>
+      ¿Pues cuál monte? La ciudad se lo tragó todito. Lo asfixió, decía mi abue. Lo que haya sido esa cosa, salió de entre las calles, de debajo de la banqueta.
+    </p>
+
+    <p>
+      ¿Creen que los extranjeros sigan viniendo después de esto?
+    </p>
+
+    <p>
+      ¡Uy, sí!
+    </p>
+
+    <p>
+      Quizá se nos caiga el negocio por un mes o dos, pero de que vuelven, vuelven. Están muy cómodos en esta ciudad. Puede que allá en su casa sean unos nadies a los que no les alcanza ni para una botella de mal vino. ¿Pero aquí? Viven como duquesitos o virreysitos.
+    </p>
+
+    <p>
+      Ya quisiera uno darse esa vida en su propia tierra.
+    </p>
+
+    <p>
+      ¿A qué hora llegó la policía?
+    </p>
+
+    <p>
+      Nunca.
+    </p>
+
+    <p>
+      Estuvimos llame y llame. Para cuando vimos las luces de las patrullas, el animal ya se había ido.
+    </p>
+
+    <p>
+      Tampoco crea que estuvo aquí mucho tiempo. Diez minutos, si acaso.
+    </p>
+
+    <p>
+      Pero larguísimos. Una noche completa en cada uno.
+    </p>
+
+    <p>
+      ¿Cómo lo agarraron entonces?
+    </p>
+
+    <p>
+      Lo que escuché es que lo encontraron tirado en un parque, medio colgado de un columpio. Ya era hombre para entonces. Supieron que era él porque estaba desnudo y todo manchado de sangre.
+    </p>
+
+    <p>
+      Luego se lo llevaron al ministerio. Supongo que estás bien enterada del desmadre que se soltó allá.
+    </p>
+
+
+    <!-- Scene break -->
+
+    <div class="scene-break" aria-hidden="true">
+      • • •
+    </div>
+
+
+    <p class="no-indent">
+      Los perros y vecinos de la Doctores pasaron el día entero a las puertas del ministerio público. Formaron remolinos y barricadas. Corearon alaridos que les estallaban desde el fondo de las tripas, raspando el aire calentado por los humos de sus gargantas.
+    </p>
+
+    <p>
+      El Sarnoso dormía en su celda. Un sueño plácido, en el que era perro manso cobijado por una de las tantas jaurías que lo acompañaron, lo mantuvo aislado de la furia que se agitaba en la calle. Cinco oficiales lo rodeaban. Estaban bien informados de lo que ese hombre, desnutrido y desesperanzado, era capaz. El resto del ministerio se agolpó en la puerta principal del edificio. Olían su propio sudor. Saboreaban la sal acumulada en sus labios.
+    </p>
+
+    <p>
+      Afuera, alguien o algo lanzó su cuerpo contra la entrada. No cabe hablar, sin embargo, de actos individuales en la multitud.
+    </p>
+
+    <p>
+      Las puertas cayeron ante un vórtice de manos y patas, de insultos y ladridos. Algunos de los policías que las resguardaban quedaron en el suelo, machacados por dentelladas y golpes. El resto de los oficiales, blandiendo garrotes y pistolas, formó su propio torbellino. Ambos desórdenes chocaron en el centro del vestíbulo, hinchando el espacio con la ira y dolor de sus cuerpos. Un calor tartáreo se abrió paso por el edificio. El cielo ostentaba una finísima franja de sol, que murió pronto para dar lugar a una noche sin luna, ni estrellas.
+    </p>
+
+    <p>
+      El calor alcanzó los pies de El Sarnoso y llegó al instante hasta su pecho. Su corazón, que había mantenido un ritmo casi de ultratumba, comenzó a latir con tanta fuerza, con tanta velocidad, que los policías que rodeaban su celda vieron aquel cuerpo, mugroso y casi en los huesos, sacudiéndose. Los codos y rodillas se alargaron y afilaron. Los pies se volvieron más anchos. Los huesos de la espalda triplicaron su volumen. La cabeza se aplanó, desplazando los ojos hacia el costado; empujando nariz, dientes y quijada hacia el frente. Cada cambio fue un estruendo. Aunque las líneas del rostro ya no correspondían a las de un hombre, los guardias captaron con toda claridad su agonía.
+    </p>
+
+    <p>
+      Sonó un aullido que retumbó hasta la entrada del ministerio. Policías, vecinos y perros pararon sus ataques, atentos al umbral que conectaba con el área de celdas. Los cinco oficiales que resguardaban a El Sarnoso emergieron, corriendo de espaldas hacia la multitud, con pistolas en mano y apuntando hacia el recuadro oscuro del umbral. Se escuchó una sacudida de barrotes, seguida por una estructura de metal azotando contra el suelo; luego pasos pesados con uñas.
+    </p>
+
+    <p>
+      El Sarnoso apareció en el vestíbulo, deteniéndose a tres pasos del umbral. Sus ojos de luna sangrienta se tragaron el espacio completo, con todos los perros y personas que lo ocupaban. Uno de los policías dio un paso al frente con pistola en el aire, pero fue derribado de inmediato por la jauría. Antes de que el caos se desatara de nuevo, El Sarnoso lanzó otro aullido y corrió hacia la noche.
+    </p>
+
+    <p>
+      Muchos lo vieron esquivar motos y coches, abrirse paso entre multitudes de transeúntes, adentrarse confundido en restaurantes, antros y cafés. No muy lejos, el asfalto se alumbró con luces de patrullas, y sombras uniformadas inundaron las banquetas.
+    </p>
+
+    <p>
+      El Sarnoso olfateó la hostilidad en el aire. Aún sentía la furia del calor, pero ésta comenzó a ceder ante una humedad que le palpitaba entre los ojos y el hocico. Pensó –con inesperada claridad– que la calle ya no lo protegía; que, una vez más, se había quedado sin hogar.
+    </p>
+
+    <p>
+      El instinto de calle lo guió hasta una de las entradas del metro Sevilla. Descendió. Lo asaltaron olores a orines y hierba quemada, y luego un larguísimo rechinar de ruedas sobre metal. Corrió por los túneles llenos de personas que huían hacia donde pudieran. Entre la confusión de pies espantados, notó de reojo a un hombre sucio y derrotado en el suelo, con la mirada perdida en la bruma. Pensó en sus veranos de baños con agua de fuente bajo el sol, y le llegaron también, desde ningún lado en particular, los aromas del pelo mojado y la sensación de cálidos lengüetazos en su rostro y en sus manos. Ya no sentía el calor. Todo su cuerpo encerraba un vapor frío.
+    </p>
+
+    <p>
+      Los pasos de los policías resonaron en las escaleras y túneles del metro. Al llegar al andén, encontraron a El Sarnoso sentado –como cualquier otro perro– en la orilla de la plataforma.
+    </p>
+
+    <p>
+      —¡Alto ahí animal!— gritó uno de los oficiales con la pistola desenfundada. Detrás suyo, más de veinte cañones apuntaban en dirección a las vías.
+    </p>
+
+    <p>
+      El Sarnoso dejó salir un quejido. De haberlo escuchado, todos los presentes lo habrían recordado como uno de los sonidos más patéticos y tristes de sus vidas. Pero la última expresión de aquella criatura se ahogó en una ráfaga de aire, un haz de luz y el aullido del tren a punto de llegar.
+    </p>
+
+    <p>
+      Con movimiento ágil, El Sarnoso se puso de pie y saltó hacia las vías. Los policías dispararon, pero ninguna de sus balas lo alcanzó antes que el tren.
+    </p>
+
+
+    <!-- Scene break -->
+
+    <div class="scene-break" aria-hidden="true">
+      • • •
+    </div>
+
+
+    <p class="no-indent">
+      Lo encontraron entero. Bien aporreado, sí, pero sin que le faltara ni un pelo de la barba. Se me hace que el tren salió peor librado. Ni parecía muerto. Si no fuera porque hubo testigos, la gente pensaría que un hombre apareció encuerado en las vías. Sepa quién reclamó el cuerpo. Alguno de los vecinos de la colonia, de seguro. No puede decirse que lo amaran, pero estoy seguro de que les dolió perderlo. Como si se les hubiera muerto un conocido de hace años. Yo casi ni lo topaba y ya lo extraño; imagínese. Es que era algo que estaba ahí, invariable. Que ya no esté se siente antinatural. Disculpe la palabra; es que no tengo otra manera de explicarlo…. Pero bueno. Vagabundos sobran en esta ciudad. Ya nos encariñaremos con otro. Hay uno que he visto merodeando por ahí. Tiene más greña y el pellejo menos jodido. Los perros ya lo empezaron a seguir. A ver si este sí nos dura. Al menos en lo que los gringos se van para otra ciudad.
+    </p>
+
+  </main>
+
+
+  <!-- =======================================================
+       SOCIAL SHARE SECTION
+       ======================================================== -->
+
+  <section class="social-share">
+    <div class="share-title">Share this story</div>
+    <div class="share-buttons">
+
+      <!-- X / Twitter -->
+      <a href="#" class="share-btn" id="shareTwitter" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X / Twitter
+      </a>
+
+      <!-- Facebook -->
+      <a href="#" class="share-btn" id="shareFacebook" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="#" class="share-btn" id="shareWhatsapp" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.99c-.001 5.45-4.436 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+        WhatsApp
+      </a>
+
+      <!-- Copy Link -->
+      <button class="share-btn" id="shareCopy">
+        <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        <span id="copyText">Copy Link</span>
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- =======================================================
+       FOOTER
+       ======================================================== -->
+
+  <footer class="story-footer">
+
+    <p>
+      © 2026 César Cantú
+    </p>
+
+    <p>
+      <a href="mailto:you@example.com">Contact</a>
+    </p>
+
+  </footer>
+
+
+  <!-- =======================================================
+       JAVASCRIPT
+       ======================================================== -->
+
+  <script>
+    /* Reading progress bar */
+    window.addEventListener("scroll", function () {
+      const story = document.querySelector(".story");
+      const progress = document.getElementById("readingProgress");
+
+      const storyTop = story.offsetTop;
+      const storyHeight = story.offsetHeight;
+      const scrollPosition = window.scrollY;
+
+      const percentage = ((scrollPosition - storyTop) / (storyHeight - window.innerHeight)) * 100;
+      const clampedPercentage = Math.min(Math.max(percentage, 0), 100);
+
+      progress.style.width = clampedPercentage + "%";
+    });
+
+    /* Social Share Links Initialization */
+    document.addEventListener("DOMContentLoaded", function () {
+      const pageUrl = encodeURIComponent(window.location.href);
+      const pageTitle = encodeURIComponent("Las noches de El Sarnoso — César Cantú");
+
+      document.getElementById("shareTwitter").href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+      document.getElementById("shareFacebook").href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+      document.getElementById("shareWhatsapp").href = `https://api.whatsapp.com/send?text=${pageTitle}%20${pageUrl}`;
+
+      const copyBtn = document.getElementById("shareCopy");
+      const copyText = document.getElementById("copyText");
+
+      copyBtn.addEventListener("click", function () {
+        navigator.clipboard.writeText(window.location.href).then(function () {
+          copyText.textContent = "Copied!";
+          setTimeout(() => { copyText.textContent = "Copy Link"; }, 2000);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
